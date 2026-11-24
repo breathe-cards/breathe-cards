@@ -22,7 +22,15 @@
   const states = {};
   for (const k in v) states['sensor.demo_' + k] = { state: String(v[k]), attributes: { unit_of_measurement: meta[k][0], device_class: meta[k][1] } };
   const hass = { language: lang, locale: { language: lang }, states };
-  for (const k in v) {
+  if (q.has('editor')) {
+    document.body.style.cssText = 'margin:0;padding:20px;background:#111;--primary-text-color:#e1e1e1;--secondary-text-color:#9b9b9b;--primary-color:#03a9f4;--divider-color:#2f2f2f;--secondary-background-color:#1f1f1f';
+    const g = document.getElementById('g'); g.style.cssText = 'display:grid;grid-template-columns:560px 280px;gap:20px;align-items:start';
+    const ed = document.createElement('breathe-air-card-editor'); const box = document.createElement('div');
+    box.style.cssText = 'background:#1c1c1c;border-radius:12px;padding:16px'; box.appendChild(ed); g.appendChild(box);
+    const cell = document.createElement('div'); cell.className = 'cell'; const c = document.createElement('breathe-air-card');
+    const cfg = { entity: 'sensor.demo_humidity', preset: 'humidity' }; c.setConfig(cfg); c.hass = hass; cell.appendChild(c); g.appendChild(cell);
+    ed.setConfig(cfg); ed.hass = hass;
+  } else for (const k in v) {
     const cell = document.createElement('div'); cell.className = 'cell';
     const c = document.createElement('breathe-air-card');
     c.setConfig({ entity: 'sensor.demo_' + k, preset: k }); c.hass = hass;

@@ -1,10 +1,16 @@
-# Breathe Cards
+<p align="center"><img src="docs/logo.svg" width="96" alt="Breathe Cards"></p>
 
-Картки якості повітря для [Home Assistant](https://www.home-assistant.io/), які показують, що саме вимірює датчик: бульбашки CO₂, пил у повітрі, струмені випарів, туман і краплі, скляний термометр. Шкала із зонами і слово стану одразу кажуть, чи все гаразд із повітрям.
+<h1 align="center">Breathe Cards</h1>
 
-🇬🇧 [English version](README.md)
+<p align="center">Живі картки для <a href="https://www.home-assistant.io/">Home Assistant</a>: кожна показує те, що вимірює її датчик.</p>
 
-![Breathe Air Cards](docs/cards-uk-poor.png)
+<p align="center">🇬🇧 <a href="README.md">English version</a></p>
+
+![Breathe Air Cards, анімація](docs/demo.gif)
+
+Бульбашки CO₂, пил у повітрі, струмені випарів, туман і краплі, скляний термометр. Шкала із зонами і слово стану одразу кажуть, чи все гаразд із повітрям.
+
+![Погане повітря](docs/cards-uk-poor.png)
 
 На справжньому дашборді Home Assistant:
 
@@ -62,6 +68,10 @@ zones:
 ```
 
 Повний список налаштувань і стандартні зони — в [англійському README](README.md#options).
+
+## Мови
+
+Картка бере мову з налаштувань Home Assistant. Вбудовано **англійську** й **українську**, для інших мов поки показується англійська. Переклади вітаються: це один блок тексту в [`src/core/i18n.js`](src/core/i18n.js).
 
 ## Ліцензія
 

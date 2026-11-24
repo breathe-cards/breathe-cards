@@ -2,6 +2,12 @@
 
 All notable changes are listed here. The project follows [Semantic Versioning](https://semver.org/).
 
+## [1.0.1] – 2026-11-24
+
+### Documentation
+- Animated demo, editor screenshot, logo and social preview.
+- Languages and troubleshooting sections in the README.
+
 ## [1.0.0] – 2026-11-24
 
 First public release.

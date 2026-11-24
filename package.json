@@ -1,6 +1,6 @@
 {
   "name": "breathe-cards",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Air quality cards for Home Assistant with live illustrations and zone scales",
   "type": "module",
   "license": "MIT",

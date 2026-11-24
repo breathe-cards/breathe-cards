@@ -1,12 +1,21 @@
-# Breathe Cards
+<p align="center"><img src="docs/logo.svg" width="96" alt="Breathe Cards logo"></p>
 
-Air quality cards for [Home Assistant](https://www.home-assistant.io/) that show what a sensor measures: rising CO₂ bubbles, drifting dust, vapour wisps, mist and droplets, a glass thermometer. A zone scale with a word for the current state tells you at a glance whether the air is fine.
+<h1 align="center">Breathe Cards</h1>
 
-[![hacs][hacs-badge]][hacs-url] ![version][version-badge] ![license][license-badge]
+<p align="center">Living cards for <a href="https://www.home-assistant.io/">Home Assistant</a>: each card shows what its sensor measures.</p>
 
-🇺🇦 [Українська версія](README.uk.md)
+<p align="center">
+  <a href="https://hacs.xyz/docs/faq/custom_repositories/"><img src="https://img.shields.io/badge/HACS-Custom-41BDF5.svg" alt="HACS"></a>
+  <a href="https://github.com/breathe-cards/breathe-cards/releases/latest"><img src="https://img.shields.io/github/v/release/breathe-cards/breathe-cards" alt="Release"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/breathe-cards/breathe-cards" alt="License"></a>
+  <a href="https://github.com/breathe-cards/breathe-cards/actions/workflows/ci.yml"><img src="https://github.com/breathe-cards/breathe-cards/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+</p>
 
-![Breathe Air Cards](docs/cards-en.png)
+<p align="center">🇺🇦 <a href="README.uk.md">Українська версія</a></p>
+
+![Breathe Air Cards, animated](docs/demo.gif)
+
+Rising CO₂ bubbles, drifting dust, vapour wisps, mist and droplets, a glass thermometer. A zone scale with a word for the current state tells you at a glance whether the air is fine.
 
 ## Features
 
@@ -19,7 +28,9 @@ Air quality cards for [Home Assistant](https://www.home-assistant.io/) that show
 - Fits phones, tablets and desktops; supports the sections and masonry dashboards.
 - English and Ukrainian, picked from your Home Assistant language. Temperature zones switch to °F when the sensor reports °F.
 
-![Poor air, Ukrainian](docs/cards-uk-poor.png)
+When the air gets worse, the illustration gets denser and the state word changes:
+
+![Poor air, Ukrainian interface](docs/cards-uk-poor.png)
 
 On a real Home Assistant dashboard (Ukrainian interface):
 
@@ -66,6 +77,12 @@ zones:
   - { to: 500, level: bad, label: High }
 ```
 
+### Visual editor
+
+Every option is available in the card editor, including your own zones and state words:
+
+![Visual editor](docs/editor-en.png)
+
 ### Options
 
 | Option | Default | Description |
@@ -102,6 +119,16 @@ On a sections dashboard a card takes 6 of 12 columns and 4 rows by default; it c
 
 PM limits follow the WHO 2021 air quality guidelines. VOC sensors report in different units (an index from 0 to 500, ppb or mg/m³). The defaults assume an index; for ppb or mg/m³ set your own `zones`.
 
+## Languages
+
+The card follows your Home Assistant language. Built in: **English** and **Ukrainian**. Other languages show English for now. Adding one is a single block of text in [`src/core/i18n.js`](src/core/i18n.js); pull requests with translations are welcome.
+
+## Troubleshooting
+
+- **“Custom element doesn't exist: breathe-air-card”.** Reload the browser page. In the mobile app, close it completely and open it again so it loads the new file.
+- **The VOC card shows odd states.** VOC sensors report in different units. Set `zones` to match your sensor's unit.
+- **No animation.** Check that `animation` is not `false` and that “reduce motion” is off in your operating system; the card also pauses while it is off screen.
+
 ## Compatibility
 
 Tested with Home Assistant 2026.11 in current Chrome, and on the demo page at phone, tablet and desktop widths. Needs a browser or companion app from 2023 or later (Chrome 111, Safari 16.2, Firefox 113): the card uses CSS container queries and `color-mix()`. The card draws its own dark background, so it looks the same with light and dark themes.
@@ -123,7 +150,3 @@ The code is split so new things are added as separate files: illustrations in `s
 
 [MIT](LICENSE)
 
-[hacs-badge]: https://img.shields.io/badge/HACS-Custom-41BDF5.svg
-[hacs-url]: https://hacs.xyz/docs/faq/custom_repositories/
-[version-badge]: https://img.shields.io/github/v/release/breathe-cards/breathe-cards
-[license-badge]: https://img.shields.io/github/license/breathe-cards/breathe-cards
