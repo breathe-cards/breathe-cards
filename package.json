@@ -1,0 +1,21 @@
+{
+  "name": "breathe-cards",
+  "version": "1.0.0",
+  "description": "Air quality cards for Home Assistant with live illustrations and zone scales",
+  "type": "module",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "build": "node build.mjs",
+    "watch": "node build.mjs --watch",
+    "test": "node --test test/*.test.js",
+    "check": "npm test && npm run build",
+    "set-owner": "node scripts/set-owner.mjs"
+  },
+  "devDependencies": {
+    "esbuild": "0.24.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

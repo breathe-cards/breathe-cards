@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Breathe Cards screenshot</title>
+<!-- Used to render docs/*.png: ?lang=uk&poor=1 -->
+<style>
+  body{margin:0;padding:20px;background:radial-gradient(900px 500px at 80% -10%,#4d6a57,transparent 60%),#18221c}
+  .g{display:grid;grid-template-columns:repeat(3,300px);gap:12px}
+  .cell{height:248px}
+</style>
+</head>
+<body>
+<div class="g" id="g"></div>
+<script src="../dist/breathe-cards.js"></script>
+<script>
+  const q = new URLSearchParams(location.search), lang = q.get('lang') || 'en', poor = q.has('poor');
+  const v = poor ? { co2: 1580, voc: 286, pm25: 41, pm10: 58, temperature: 27.2, humidity: 31.5 }
+                 : { co2: 830, voc: 48, pm25: 3, pm10: 4, temperature: 21.4, humidity: 47.5 };
+  const meta = { co2: ['ppm', 'carbon_dioxide'], voc: [null, null], pm25: ['µg/m³', 'pm25'], pm10: ['µg/m³', 'pm10'], temperature: ['°C', 'temperature'], humidity: ['%', 'humidity'] };
+  const states = {};
+  for (const k in v) states['sensor.demo_' + k] = { state: String(v[k]), attributes: { unit_of_measurement: meta[k][0], device_class: meta[k][1] } };
+  const hass = { language: lang, locale: { language: lang }, states };
+  for (const k in v) {
+    const cell = document.createElement('div'); cell.className = 'cell';
+    const c = document.createElement('breathe-air-card');
+    c.setConfig({ entity: 'sensor.demo_' + k, preset: k }); c.hass = hass;
+    cell.appendChild(c); document.getElementById('g').appendChild(cell);
+  }
+</script>
+</body>
+</html>

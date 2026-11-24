@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Breathe Cards demo</title>
+<style>
+  :root{--bg:#111613;--fg:#e8ece9;--muted:#9aa69f;--panel:#1b221e;--primary-text-color:var(--fg);--secondary-text-color:var(--muted);--primary-color:#5fb98a;--divider-color:#33403a;--secondary-background-color:#232c27}
+  body.light{--bg:#eef1ef;--fg:#1b1f1d;--muted:#5b6660;--panel:#ffffff;--primary-color:#2f7d55;--divider-color:#d2d9d4;--secondary-background-color:#f2f4f3}
+  body{margin:0;background:var(--bg);color:var(--fg);font:14px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding:24px max(16px,env(safe-area-inset-left))}
+  h1{font-weight:500;font-size:22px;margin:0 0 4px}
+  h2{font-weight:500;font-size:15px;margin:28px 0 10px;color:var(--muted)}
+  .bar{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+  button{font:inherit;color:var(--fg);background:var(--panel);border:1px solid var(--divider-color);border-radius:8px;padding:6px 12px;cursor:pointer}
+  .g{display:grid;gap:8px}
+  .cell{height:248px}.cell.low{height:184px}
+  .ed{background:var(--panel);padding:16px;border-radius:12px;max-width:560px;flex:1}
+  .split{display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap}
+  #log{font:12px ui-monospace,monospace;color:var(--muted);white-space:pre-wrap;margin-top:8px}
+</style>
+</head>
+<body>
+<h1>Breathe Cards</h1>
+<div>Demo with simulated sensors. Values change every few seconds.</div>
+<div class="bar">
+  <button id="lang">Language: English</button>
+  <button id="theme">Theme: dark</button>
+  <button id="bad">Simulate poor air</button>
+</div>
+
+<h2>Desktop (about 300 px per card)</h2>
+<div class="g" id="desktop" style="grid-template-columns:repeat(auto-fill,minmax(260px,300px))"></div>
+<h2>Phone (two cards per row, about 170 px)</h2>
+<div class="g" id="phone" style="grid-template-columns:repeat(2,170px)"></div>
+<h2>Variants: low card, unavailable, no words, segments, ring, custom colour</h2>
+<div class="g" id="variants" style="grid-template-columns:repeat(auto-fill,minmax(200px,220px))"></div>
+<h2>Visual editor and live preview</h2>
+<div class="split"><div class="ed" id="editor"></div><div class="cell" style="width:260px" id="preview"></div></div>
+<div id="log"></div>
+
+<script src="../dist/breathe-cards.js"></script>
+<script>
+  const state = (id, v, unit, dc) => ({ entity_id: id, state: String(v), attributes: { unit_of_measurement: unit, device_class: dc, friendly_name: id } });
+  const normal = { co2: 830, voc: 48, pm25: 3, pm10: 4, temperature: 21.4, humidity: 47.5 };
+  const poor = { co2: 1580, voc: 286, pm25: 41, pm10: 58, temperature: 27.2, humidity: 31.5 };
+  let values = { ...normal };
+  const ids = {
+    co2: ['sensor.living_room_co2', 'ppm', 'carbon_dioxide'],
+    voc: ['sensor.living_room_tvoc', null, null],
+    pm25: ['sensor.living_room_pm25', 'µg/m³', 'pm25'],
+    pm10: ['sensor.living_room_pm10', 'µg/m³', 'pm10'],
+    temperature: ['sensor.living_room_temperature', '°C', 'temperature'],
+    humidity: ['sensor.living_room_humidity', '%', 'humidity'],
+  };
+  let lang = 'en';
+  const makeHass = () => {
+    const states = { 'sensor.offline_co2': state('sensor.offline_co2', 'unavailable', 'ppm', 'carbon_dioxide') };
+    for (const [k, [id, u, dc]] of Object.entries(ids)) states[id] = state(id, values[k], u, dc);
+    return { language: lang, locale: { language: lang }, states };
+  };
+  let hass = makeHass();
+  const cards = [];
+  function add(parent, config, cls = '') {
+    const cell = document.createElement('div');
+    cell.className = 'cell ' + cls;
+    const card = document.createElement('breathe-air-card');
+    card.setConfig(config);
+    card.hass = hass;
+    cell.appendChild(card);
+    document.getElementById(parent).appendChild(cell);
+    cards.push(card);
+    return card;
+  }
+  const keys = Object.keys(ids);
+  keys.forEach((k) => add('desktop', { entity: ids[k][0], preset: k }));
+  keys.forEach((k) => add('phone', { entity: ids[k][0] }));
+  add('variants', { entity: ids.temperature[0], preset: 'temperature' }, 'low');
+  add('variants', { entity: 'sensor.offline_co2', preset: 'co2' });
+  add('variants', { entity: ids.co2[0], preset: 'co2', show_state: false });
+  add('variants', { entity: ids.humidity[0], preset: 'humidity', scale: 'segments' });
+  add('variants', { entity: ids.pm25[0], preset: 'pm25', scale: 'ring' });
+  add('variants', { entity: ids.voc[0], preset: 'voc', color: '#F5C26B', name: 'Office VOC' });
+
+  const preview = add('preview', { entity: ids.co2[0], preset: 'co2' });
+  const editor = document.createElement('breathe-air-card-editor');
+  editor.setConfig({ entity: ids.co2[0], preset: 'co2' });
+  editor.hass = hass;
+  document.getElementById('editor').appendChild(editor);
+  editor.addEventListener('config-changed', (e) => {
+    const c = e.detail.config;
+    document.getElementById('log').textContent = 'config: ' + JSON.stringify(c);
+    try { preview.setConfig(c); preview.hass = hass; editor.setConfig(c); }
+    catch (err) { document.getElementById('log').textContent += '\nerror: ' + err.message; }
+  });
+  document.addEventListener('hass-more-info', (e) => { document.getElementById('log').textContent = 'more-info: ' + e.detail.entityId; });
+
+  const push = () => { hass = makeHass(); cards.forEach((c) => (c.hass = hass)); editor.hass = hass; };
+  setInterval(() => {
+    for (const k of keys) values[k] = +(values[k] * (1 + (Math.random() - 0.5) * 0.03)).toFixed(1);
+    push();
+  }, 4000);
+  document.getElementById('bad').onclick = (e) => {
+    const isPoor = values.co2 > 1200;
+    values = { ...(isPoor ? normal : poor) };
+    e.target.textContent = isPoor ? 'Simulate poor air' : 'Back to normal air';
+    push();
+  };
+  document.getElementById('lang').onclick = (e) => {
+    lang = lang === 'en' ? 'uk' : 'en';
+    e.target.textContent = 'Language: ' + (lang === 'en' ? 'English' : 'Українська');
+    push();
+  };
+  document.getElementById('theme').onclick = (e) => {
+    const light = document.body.classList.toggle('light');
+    e.target.textContent = 'Theme: ' + (light ? 'light' : 'dark');
+  };
+</script>
+</body>
+</html>
