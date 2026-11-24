@@ -2,6 +2,13 @@
 
 All notable changes are listed here. The project follows [Semantic Versioning](https://semver.org/).
 
+## [1.1.0] – 2026-11-24
+
+### Added
+- 23 more languages: Català, Čeština, Dansk, Deutsch, Ελληνικά, Español, Suomi, Français, Magyar, Italiano, 日本語, 한국어, Norsk bokmål, Nederlands, Polski, Português, Português (Brasil), Română, Slovenčina, Svenska, Türkçe, 简体中文, 繁體中文.
+- Language detection by exact code first (pt-BR, zh-Hant), then base language.
+- Security policy and Dependabot configuration.
+
 ## [1.0.1] – 2026-11-24
 
 ### Documentation

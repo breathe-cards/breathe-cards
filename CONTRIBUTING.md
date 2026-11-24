@@ -20,10 +20,11 @@ src/
   index.js              entry point, registers every card
   core/
     meta.js             project name, element prefix, card-picker registration
-    i18n.js             translations (en, uk)
+    i18n.js             English and Ukrainian texts, language detection
     presets.js          sensor types: colour, icon, unit, default zones
     resolve.js          config → what the card renders (pure, unit-tested)
     util.js             helpers
+  translations/         one file per language (de, fr, ja, …)
   animations/           one file per illustration + registry (index.js)
   scales/               one file per scale + registry (index.js)
   cards/air/            breathe-air-card: card.js, editor.js, styles.js
@@ -41,15 +42,15 @@ demo/                   demo and screenshot pages with simulated sensors
 
 1. Create `src/scales/my-scale.js` exporting `{ id, slot, css, html, update }` (see `src/scales/index.js`).
 2. Register it in `src/scales/index.js`.
-3. Add the label `scale.my-scale` to every language in `src/core/i18n.js`. The editor lists it automatically.
+3. Add the label `scale.my-scale` to `src/core/i18n.js` and to each file in `src/translations/`. The editor lists it automatically.
 
 ## Add a sensor type
 
-Add an entry to `PRESETS` in `src/core/presets.js` and its texts (`preset.<id>`, `preset.<id>.sub`, zone labels) to `src/core/i18n.js`. If Home Assistant has a device class for it, map it in `DEVICE_CLASS_PRESET`.
+Add an entry to `PRESETS` in `src/core/presets.js` and its texts (`preset.<id>`, `preset.<id>.sub`, zone labels) to `src/core/i18n.js` and `src/translations/`. If Home Assistant has a device class for it, map it in `DEVICE_CLASS_PRESET`.
 
 ## Add a language
 
-Copy the `en` block in `src/core/i18n.js`, translate the values and keep the keys. Missing keys fall back to English. The unit test checks the main keys exist.
+Copy any file in `src/translations/` (for example `de.js`) to `<code>.js`, using the Home Assistant language code (`fr`, `pt-BR`, `zh-Hant`), translate the values and keep the keys. Then add it to `src/translations/index.js`. The English originals are in `src/core/i18n.js`. `npm test` fails if a key is missing.
 
 ## Add a new card
 

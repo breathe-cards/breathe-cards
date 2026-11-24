@@ -2,7 +2,8 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { resolve, presetFor, presetZones, zoneIndex, scalePosition, fraction } from '../src/core/resolve.js';
 import { guessPreset, PRESETS } from '../src/core/presets.js';
-import { language, t, LANGUAGES } from '../src/core/i18n.js';
+import { language, t, languages, ENGLISH_KEYS, hasString } from '../src/core/i18n.js';
+import '../src/translations/index.js';
 import { getScale, registerScale } from '../src/scales/index.js';
 
 const st = (state, attrs = {}) => ({ state: String(state), attributes: attrs });
@@ -101,18 +102,31 @@ test('zone lookup and equal-width scale position', () => {
   assert.equal(fraction(r, 1200), 0.5);
 });
 
-test('every language has every English key', () => {
-  for (const lang of LANGUAGES) {
-    for (const k of ['zone.excellent', 'ed.zones', 'scale.pointer', 'state.unavailable', 'preset.humidity.sub']) {
-      assert.notEqual(t(lang, k), k, `${lang} misses ${k}`);
+test('every language defines every key (no silent English fallback)', () => {
+  const neutral = new Set(['preset.co2', 'preset.voc', 'preset.pm25', 'preset.pm10', 'preset.generic.sub']);
+  assert.ok(languages().length >= 25, 'expected 25+ languages');
+  assert.ok(!languages().includes('ru'));
+  for (const lang of languages()) {
+    for (const k of ENGLISH_KEYS) {
+      if (!neutral.has(k)) assert.ok(hasString(lang, k), `${lang} misses ${k}`);
     }
+    assert.ok(t(lang, 'ed.zone.del', { n: 3 }).includes('3'), `${lang}: {n} placeholder lost`);
   }
 });
 
-test('language detection falls back to English', () => {
+test('language detection: exact code, base language, aliases, English fallback', () => {
   assert.equal(language({ locale: { language: 'uk' } }), 'uk');
   assert.equal(language({ language: 'uk-UA' }), 'uk');
-  assert.equal(language({ locale: { language: 'de' } }), 'en');
+  assert.equal(language({ locale: { language: 'de' } }), 'de');
+  assert.equal(language({ locale: { language: 'de-AT' } }), 'de');
+  assert.equal(language({ locale: { language: 'pt-BR' } }), 'pt-BR');
+  assert.equal(language({ locale: { language: 'pt' } }), 'pt');
+  assert.equal(language({ locale: { language: 'zh-Hant' } }), 'zh-Hant');
+  assert.equal(language({ locale: { language: 'zh-TW' } }), 'zh-Hant');
+  assert.equal(language({ locale: { language: 'zh' } }), 'zh-Hans');
+  assert.equal(language({ locale: { language: 'no' } }), 'nb');
+  assert.equal(language({ locale: { language: 'ru' } }), 'en');
+  assert.equal(language({ locale: { language: 'xx' } }), 'en');
 });
 
 test('every preset has ascending zones and known levels', () => {

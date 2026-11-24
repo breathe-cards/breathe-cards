@@ -2,6 +2,7 @@
 // Adding a new card: create src/cards/<name>/ with card.js (+ editor.js) and add it below.
 
 import { VERSION, PROJECT, announceCard, define } from './core/meta.js';
+import './translations/index.js';
 import { t, language, registerStrings } from './core/i18n.js';
 import { registerPreset } from './core/presets.js';
 import { registerAnimation } from './animations/index.js';

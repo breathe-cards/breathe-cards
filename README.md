@@ -26,7 +26,7 @@ Rising CO₂ bubbles, drifting dust, vapour wisps, mist and droplets, a glass th
 - Visual editor for every option, YAML works too.
 - Tapping the card opens the standard Home Assistant history dialog.
 - Fits phones, tablets and desktops; supports the sections and masonry dashboards.
-- English and Ukrainian, picked from your Home Assistant language. Temperature zones switch to °F when the sensor reports °F.
+- 25 languages, picked from your Home Assistant language. Temperature zones switch to °F when the sensor reports °F.
 
 When the air gets worse, the illustration gets denser and the state word changes:
 
@@ -121,7 +121,11 @@ PM limits follow the WHO 2021 air quality guidelines. VOC sensors report in diff
 
 ## Languages
 
-The card follows your Home Assistant language. Built in: **English** and **Ukrainian**. Other languages show English for now. Adding one is a single block of text in [`src/core/i18n.js`](src/core/i18n.js); pull requests with translations are welcome.
+The card follows your Home Assistant language. Built in:
+
+English · Українська · Català · Čeština · Dansk · Deutsch · Ελληνικά · Español · Suomi · Français · Magyar · Italiano · 日本語 · 한국어 · Norsk bokmål · Nederlands · Polski · Português · Português (Brasil) · Română · Slovenčina · Svenska · Türkçe · 简体中文 · 繁體中文
+
+Other languages show English. Each language is one file in [`src/translations/`](src/translations/); corrections and new languages are welcome as pull requests.
 
 ## Troubleshooting
 

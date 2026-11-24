@@ -68,16 +68,25 @@ const STRINGS = {
   },
 };
 
-export const LANGUAGES = Object.keys(STRINGS);
+export const languages = () => Object.keys(STRINGS);
+export const ENGLISH_KEYS = Object.keys(STRINGS.en);
+/** True when a language defines the key itself (no English fallback). */
+export const hasString = (lang, key) => !!STRINGS[lang] && Object.prototype.hasOwnProperty.call(STRINGS[lang], key);
 
-/** Picks the card language from Home Assistant, then the browser. */
+/** Picks the card language from Home Assistant, then the browser.
+ *  Exact code first (zh-Hant, pt-BR), then the base language (de-AT → de). */
 export function language(hass) {
-  const l = String(
+  const raw = String(
     (hass && hass.locale && hass.locale.language) || (hass && hass.language) ||
     (typeof navigator !== 'undefined' && navigator.language) || 'en',
-  ).toLowerCase();
-  const base = l.split(/[-_]/)[0];
-  return STRINGS[base] ? base : 'en';
+  ).replace('_', '-');
+  const byLower = Object.fromEntries(Object.keys(STRINGS).map((k) => [k.toLowerCase(), k]));
+  const l = raw.toLowerCase();
+  if (byLower[l]) return byLower[l];
+  if (/^zh-(tw|hk|mo)/.test(l)) return byLower['zh-hant'] || 'en';
+  const base = l.split('-')[0];
+  const alias = { zh: 'zh-hans', no: 'nb', nn: 'nb' }[base] || base;
+  return byLower[alias] || 'en';
 }
 
 export function t(lang, key, vars) {
