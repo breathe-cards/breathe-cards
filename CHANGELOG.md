@@ -2,6 +2,11 @@
 
 All notable changes are listed here. The project follows [Semantic Versioning](https://semver.org/).
 
+## [1.1.1] – 2026-11-26
+
+### Documentation
+- Breathe Cards is now in the default HACS store: install instructions and badge updated, “Open in HACS” button added.
+
 ## [1.1.0] – 2026-11-24
 
 ### Added

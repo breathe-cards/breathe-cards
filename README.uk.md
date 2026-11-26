@@ -31,11 +31,13 @@
 
 ### HACS (рекомендовано)
 
-1. Відкрийте **HACS** у Home Assistant.
-2. Меню (⋮) → **Custom repositories**.
-3. Додайте `https://github.com/breathe-cards/breathe-cards`, тип **Dashboard**.
-4. Знайдіть **Breathe Cards**, відкрийте і натисніть **Download**.
-5. Оновіть сторінку браузера.
+Breathe Cards є в стандартному каталозі HACS.
+
+[![Open in HACS](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=breathe-cards&repository=breathe-cards&category=plugin)
+
+1. Відкрийте **HACS** у Home Assistant (у нових версіях — **Налаштування → Магазин**).
+2. Знайдіть **Breathe Cards**, відкрийте і натисніть **Завантажити**.
+3. Оновіть сторінку браузера.
 
 ### Вручну
 

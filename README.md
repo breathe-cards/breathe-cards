@@ -5,7 +5,7 @@
 <p align="center">Living cards for <a href="https://www.home-assistant.io/">Home Assistant</a>: each card shows what its sensor measures.</p>
 
 <p align="center">
-  <a href="https://hacs.xyz/docs/faq/custom_repositories/"><img src="https://img.shields.io/badge/HACS-Custom-41BDF5.svg" alt="HACS"></a>
+  <a href="https://hacs.xyz/"><img src="https://img.shields.io/badge/HACS-Default-41BDF5.svg" alt="HACS Default"></a>
   <a href="https://github.com/breathe-cards/breathe-cards/releases/latest"><img src="https://img.shields.io/github/v/release/breathe-cards/breathe-cards" alt="Release"></a>
   <a href="LICENSE"><img src="https://img.shields.io/github/license/breathe-cards/breathe-cards" alt="License"></a>
   <a href="https://github.com/breathe-cards/breathe-cards/actions/workflows/ci.yml"><img src="https://github.com/breathe-cards/breathe-cards/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
@@ -40,11 +40,13 @@ On a real Home Assistant dashboard (Ukrainian interface):
 
 ### HACS (recommended)
 
-1. Open **HACS** in Home Assistant.
-2. Open the menu (⋮) → **Custom repositories**.
-3. Add `https://github.com/breathe-cards/breathe-cards`, type **Dashboard**.
-4. Find **Breathe Cards**, open it and select **Download**.
-5. Reload the browser page.
+Breathe Cards is in the default HACS store.
+
+[![Open in HACS](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=breathe-cards&repository=breathe-cards&category=plugin)
+
+1. Open **HACS** in Home Assistant (in recent versions, **Settings → Store**).
+2. Search for **Breathe Cards**, open it and select **Download**.
+3. Reload the browser page.
 
 ### Manual
 
